@@ -1,7 +1,7 @@
 ###
  # @Author: Juncfang
  # @Date: 2023-02-03 15:45:03
- # @LastEditTime: 2023-04-11 18:26:40
+ # @LastEditTime: 2023-05-16 14:45:51
  # @LastEditors: Juncfang
  # @Description: 
  # @FilePath: /diffusers_fork/personal_workspace/dreambooth/inference.sh
@@ -10,12 +10,11 @@
 export CURDIR="$( cd "$( dirname $0 )" && pwd )"
 export PROJECT_DIR="$( cd "$CURDIR/../.." && pwd )"
 
-export GPU_ID="2"
-export EXPERIMENT_NAME="2023-04-23T19:44:35-idphoto0410-6add-r1.3-cls_r-500-inpainting1-yanjie-new-ddim"
+export GPU_ID="0"
+export EXPERIMENT_NAME="2023-05-16T14:28:01-idphoto_rongyao_0_inno_restore"
 # Test
+# export PROMPT="Symmetry!!,highly detailed, digital photo, a photo of a <?> boy in a T-shirt, studio solid white background"
 export PROMPT="Symmetry!!,highly detailed, digital photo, a photo of a <?> woman in a suit, solid white background"
-# export PROMPT="Symmetry!!,highly detailed, digital photo, good illumination,  photo of a <?> man with short hair in a suit, solid white background"
-# export PROMPT="Symmetry!!,highly detailed digital photo, a photo of a <?> woman in a suit and a shirt, solid blue background,portrait,masterpiece,sharp"
 # export PROMPT=" <?> man, Symmetry!!, highly detailed, digital photo, a photo of a <?> man in a suit and tie, solid red background, smile"
 # export PROMPT=" <?> woman, Symmetry!!, highly detailed, digital photo, a photo of a <?> woman in a suit and tie, solid red background, smile"
 # export PROMPT=" a photo of <?> woman art by xyzjz, highly detailed, digital photo, a photo of a <?> woman in a suit and tie, solid red background, smile"
@@ -50,6 +49,7 @@ export IMAGE_HEIGHT=512
 export NUM_INFERENCE_STEPS=50
 export GUIDANCE_SCALE=7
 export SAMPLER_METHOD="DF" #["DDIM", "DDPM", "UniPC", "PNDM", "DF"]
+# export NEGATIVE_PROMPT="cutting, photo frame, stripe, windows, geometry, gradient, rich background, bad anatomy, bad hands, error, missing fingers, cropped, worst quality, low quality,normal quality,jpeg artifacts,signature,watermark,username,blurry, ugly, tiling, poorly drawn hands, poorly drawn feet, poorly drawn face, out of frame, mutation, mutated, extra limbs, extra legs, extra arms, disfigured, deformed, cross-eye, body out of frame, blurry, bad art, bad anatomy, blurred, text, watermark, grainy rich background, bad anatomy, bad hands, error, missing fingers, cropped, worst quality, low quality,normal quality,jpeg artifacts,signature,watermark,username,blurry, ugly, tiling, poorly drawn hands, poorly drawn feet, poorly drawn face, out of frame, mutation, mutated, extra limbs, extra legs, extra arms, disfigured, deformed, cross-eye, body out of frame, blurry, bad art, bad anatomy, blurred, text, watermark, grainy rich background, bad anatomy, bad hands, error, missing fingers, cropped, worst quality, low quality,normal quality,jpeg artifacts,signature,watermark,username,blurry, ugly, tiling, poorly drawn hands, poorly drawn feet, poorly drawn face, out of frame, mutation, mutated, extra limbs, extra legs, extra arms, disfigured, deformed, cross-eye, body out of frame, blurry, bad art, bad anatomy, blurred, text, watermark, grainy"
 export NEGATIVE_PROMPT="rich background, bad anatomy, bad hands, error, missing fingers, cropped, worst quality, low quality,normal quality,jpeg artifacts,signature,watermark,username,blurry, ugly, tiling, poorly drawn hands, poorly drawn feet, poorly drawn face, out of frame, mutation, mutated, extra limbs, extra legs, extra arms, disfigured, deformed, cross-eye, body out of frame, blurry, bad art, bad anatomy, blurred, text, watermark, grainy rich background, bad anatomy, bad hands, error, missing fingers, cropped, worst quality, low quality,normal quality,jpeg artifacts,signature,watermark,username,blurry, ugly, tiling, poorly drawn hands, poorly drawn feet, poorly drawn face, out of frame, mutation, mutated, extra limbs, extra legs, extra arms, disfigured, deformed, cross-eye, body out of frame, blurry, bad art, bad anatomy, blurred, text, watermark, grainy rich background, bad anatomy, bad hands, error, missing fingers, cropped, worst quality, low quality,normal quality,jpeg artifacts,signature,watermark,username,blurry, ugly, tiling, poorly drawn hands, poorly drawn feet, poorly drawn face, out of frame, mutation, mutated, extra limbs, extra legs, extra arms, disfigured, deformed, cross-eye, body out of frame, blurry, bad art, bad anatomy, blurred, text, watermark, grainy"
 
 export MODEL_DIR="$CURDIR/experiments/$EXPERIMENT_NAME/models"
@@ -62,7 +62,6 @@ if [[ ! -e $OUTPUT_DIR ]]; then
 elif [[ ! -d $OUTPUT_DIR ]]; then
     echo "$OUTPUT_DIR already exists but is not a directory" 1>&2
 fi
-
 CUDA_VISIBLE_DEVICES="$GPU_ID" python $PROJECT_DIR/personal_workspace/inference.py \
 --pretrained_model_name_or_path $MODEL_DIR \
 --prompt "$PROMPT" \

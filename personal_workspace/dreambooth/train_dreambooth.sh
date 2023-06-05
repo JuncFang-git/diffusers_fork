@@ -1,7 +1,7 @@
 ###
  # @Author: Juncfang
  # @Date: 2022-12-30 09:57:16
- # @LastEditTime: 2023-04-11 17:32:34
+ # @LastEditTime: 2023-05-16 18:21:51
  # @LastEditors: Juncfang
  # @Description: 
  # @FilePath: /diffusers_fork/personal_workspace/dreambooth/train_dreambooth.sh
@@ -11,16 +11,18 @@ printf -v DATE '%(%Y-%m-%dT%H:%M:%S)T' -1
 export CURDIR="$( cd "$( dirname $0 )" && pwd )"
 export PROJECT_DIR="$( cd "$CURDIR/../.." && pwd )"
 
-export GPU_ID="3"
-export EXPERIMENT_NAME="idphoto0410-6add-r1.3-cls_r-500-inpainting1-yanjie-new-ddim"
-export EXPERIMENT_NAME="$DATE-$EXPERIMENT_NAME"
-export INSTANCE_DIR="$CURDIR/datasets/inpainting1/yanjie-new"
-# [train_dreambooth, train_dreambooth_unipc, train_dreambooth_ddpm,train_dreambooth_ddim]
-export TRAIN_FILE="train_dreambooth_ddim" 
+export NUM_GPUS=1
+export GPU_IDS="0"
 export MAX_STEP=500
-export CLASS_NAME="woman" # "man", "man2", "<ID-PHOTO>", "woman", "person", "cat", "dog" ...
+export EXPERIMENT_NAME="idphoto_rongyao_0_inno_restore_512"
+export EXPERIMENT_NAME="$DATE-$EXPERIMENT_NAME"
+export INSTANCE_DIR="$CURDIR/datasets/rongyao/0/processed_inno_restore_512"
+# [train_dreambooth,train_dreambooth_ddim]
+export TRAIN_FILE="train_dreambooth_ddim" 
+export CLASS_NAME="woman" # "man", "man2", "<ID-PHOTO>", "woman", "person", "cat", "dog", "girl", "boy" ...
 # MODEL_NAME ect. "CompVis/stable-diffusion-v1-4", "runwayml/stable-diffusion-v1-5"
-export MODEL_NAME="/home/junkai/code/diffusers_fork/personal_workspace/finetune/experiments/idphoto0410_6add_r1.3/models" 
+export MODEL_NAME="/home/juncfang/code/diffusers_fork/personal_workspace/finetune/experiments/idphoto0410_6add_r1.3/models" 
+# export MODEL_NAME="/home/juncfang/code/diffusers_fork/personal_workspace/finetune/experiments/idphoto0509_child_ddim/models" 
 
 export CLASS_DIR="$CURDIR/class_data/$CLASS_NAME"
 export OUTPUT_DIR="$CURDIR/experiments/$EXPERIMENT_NAME/models"
@@ -56,9 +58,11 @@ CLASS_DIR: $CLASS_DIR
 ================================================================
 "
 
+(( STEP=( $MAX_STEP + $NUM_GPUS - 1) / $NUM_GPUS ))
 # train
-# CUDA_VISIBLE_DIVICES=$GPU_ID \
-accelerate launch $PROJECT_DIR/examples/dreambooth/$TRAIN_FILE.py \
+# accelerate launch --multi_gpu --num_processes $NUM_GPUS --gpu_ids $GPU_IDS \
+accelerate launch \
+$PROJECT_DIR/examples/dreambooth/$TRAIN_FILE.py \
 --pretrained_model_name_or_path=$MODEL_NAME  \
 --instance_data_dir=$INSTANCE_DIR \
 --output_dir=$OUTPUT_DIR \
@@ -69,17 +73,16 @@ accelerate launch $PROJECT_DIR/examples/dreambooth/$TRAIN_FILE.py \
 --resolution=512 \
 --train_batch_size=1 \
 --gradient_accumulation_steps=1 \
---use_8bit_adam \
 --learning_rate=2e-6 \
 --lr_scheduler="constant" \
 --lr_warmup_steps=0 \
 --num_class_images=260 \
---max_train_steps=$MAX_STEP \
+--max_train_steps=$STEP \
 --mixed_precision="fp16" \
 --gradient_checkpointing \
 --logging_dir="../logs" \
 --train_text_encoder \
 --with_prior_preservation \
-
+--use_8bit_adam \
 # --enable_xformers \
 # --enable_xformers_memory_efficient_attention
