@@ -11,8 +11,8 @@
 export CURDIR="$( cd "$( dirname $0 )" && pwd )"
 export PROJECT_DIR="$( cd "$CURDIR/../.." && pwd )"
 
-export CKPT_PATH="/home/junkai/code/stable-diffusion-webui/models/Stable-diffusion/chilloutmix_NiPrunedFp32Fix.safetensors"
-export HF_DIR="/home/junkai/code/diffusers_fork/personal_workspace/base_model/chilloutmix"
+export CKPT_PATH="/home/juncfang/code/diffusers_fork/personal_workspace/base_model/awportraitv1.1.ckpt"
+export HF_DIR="/home/juncfang/code/diffusers_fork/personal_workspace/base_model/awportraitv1.1"
 if [[ ! -d $HF_DIR ]]; then
     mkdir -p $HF_DIR
 fi
@@ -20,5 +20,6 @@ fi
 python $PROJECT_DIR/scripts/convert_original_stable_diffusion_to_diffusers.py \
 --checkpoint_path "$CKPT_PATH" \
 --dump_path "$HF_DIR" \
---to_safetensors \
---from_safetensors \
+# --to_safetensors \
+# --from_safetensors \
+# --original_config_file ./v1-inference.yaml \

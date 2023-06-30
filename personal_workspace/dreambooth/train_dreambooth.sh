@@ -1,7 +1,7 @@
 ###
  # @Author: Juncfang
  # @Date: 2022-12-30 09:57:16
- # @LastEditTime: 2023-05-16 18:21:51
+ # @LastEditTime: 2023-06-08 14:57:56
  # @LastEditors: Juncfang
  # @Description: 
  # @FilePath: /diffusers_fork/personal_workspace/dreambooth/train_dreambooth.sh
@@ -12,16 +12,17 @@ export CURDIR="$( cd "$( dirname $0 )" && pwd )"
 export PROJECT_DIR="$( cd "$CURDIR/../.." && pwd )"
 
 export NUM_GPUS=1
-export GPU_IDS="0"
+# export GPU_IDS="1"
 export MAX_STEP=500
-export EXPERIMENT_NAME="idphoto_rongyao_0_inno_restore_512"
+export EXPERIMENT_NAME="idphoto_512_4"
 export EXPERIMENT_NAME="$DATE-$EXPERIMENT_NAME"
-export INSTANCE_DIR="$CURDIR/datasets/rongyao/0/processed_inno_restore_512"
+export INSTANCE_DIR="$CURDIR/datasets/4"
 # [train_dreambooth,train_dreambooth_ddim]
 export TRAIN_FILE="train_dreambooth_ddim" 
 export CLASS_NAME="woman" # "man", "man2", "<ID-PHOTO>", "woman", "person", "cat", "dog", "girl", "boy" ...
 # MODEL_NAME ect. "CompVis/stable-diffusion-v1-4", "runwayml/stable-diffusion-v1-5"
 export MODEL_NAME="/home/juncfang/code/diffusers_fork/personal_workspace/finetune/experiments/idphoto0410_6add_r1.3/models" 
+# export MODEL_NAME="/home/juncfang/code/diffusers_fork/personal_workspace/finetune/experiments/idphoto0605_ddim_768_20000x3/models" 
 # export MODEL_NAME="/home/juncfang/code/diffusers_fork/personal_workspace/finetune/experiments/idphoto0509_child_ddim/models" 
 
 export CLASS_DIR="$CURDIR/class_data/$CLASS_NAME"
